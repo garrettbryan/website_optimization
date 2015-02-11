@@ -5,15 +5,26 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-//    concat: {
-//      options: {
-//        separator: ';',
-//      },
-//      dist: {
-//        src: ['src/intro.js', 'src/project.js', 'src/outro.js'],
-//        dest: 'dist/built.js',
-//      },
-//    },
+    concat: {
+      generated: {
+        files: [
+          {
+            dest: 'dist/js/perfmatters.js',
+            src: [
+              'js/perfmatters.js'
+
+            ]
+          },
+          {
+            dest: 'dist/views/js/main.js',
+            src: [
+              'views/js/main.js'
+
+            ]
+          }
+        ]
+      }
+    },
     cssmin: {
       options: {
         shorthandCompacting: false,
@@ -25,13 +36,13 @@ module.exports = function(grunt) {
           cwd: 'css',
           src: ['*.css', '!*.min.css'],
           dest: 'dist/css/',
-          ext: '.min.css'
+          ext: '.css'
         },{
           expand: true,
           cwd: 'views/css/',
           src: ['*.css', '!*.min.css'],
           dest: 'dist/views/css/',
-          ext: '.min.css'
+          ext: '.css'
         }]
       }
     },
@@ -51,20 +62,17 @@ module.exports = function(grunt) {
       dynamic: {                         // Another target
         files: [{
           expand: true,                  // Enable dynamic expansion
+          cwd: 'views/images/',                   // Src matches are relative to this path
+          src: ['*.{png,jpg,gif}'],   // Actual patterns to match
+          dest: 'dist/views/images/'                  // Destination path prefix
+        },{
+          expand: true,                  // Enable dynamic expansion
           cwd: 'img/',                   // Src matches are relative to this path
           src: ['*.{png,jpg,gif}'],   // Actual patterns to match
           dest: 'dist/img/'                  // Destination path prefix
         }]
-      },
-      dynamic: {                         // Another target
-        files: [{
-          expand: true,                  // Enable dynamic expansion
-          cwd: 'views/images/',                   // Src matches are relative to this path
-          src: ['*.{png,jpg,gif}'],   // Actual patterns to match
-          dest: 'dist/views/images/'                  // Destination path prefix
-        }]
       }
-    }
+    },
     htmlmin: {                                     // Task
       dist: {                                      // Target
         options: {                                 // Target options
@@ -75,25 +83,24 @@ module.exports = function(grunt) {
           'dist/index.html': 'index.html',     // 'destination': 'source'
           'dist/project-2048.html': 'project-2048.html',
           'dist/project-mobile.html': 'project-mobile.html',
-          'dist/project-webperf.html': 'project-webperf.html'
-        }
-      },
-      dev: {                                       // Another target
-        files: {
-          'dist/views/pizza.html': 'views/pizza.html',
+          'dist/project-webperf.html': 'project-webperf.html',
+          'dist/views/pizza.html': 'views/pizza.html'
         }
       }
     }
   });
 
   // Load the plugin that provides the "concat" task.
-  //grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
-  //grunt.loadNpmTasks('grunt-contrib-htmlmin');
+  grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
 
   // Default task(s).
-  grunt.registerTask('default', ['cssmin', 'imagemin']);
+  grunt.registerTask('default', ['concat', 'cssmin', 'imagemin', 'htmlmin']);
+
+  //grunt.registerTask('build', ['useminPrepare', 'concat:generated', 'cssmin:generated', 'imagemin', 'htmlmin', 'usemin']);
+
 
 };
