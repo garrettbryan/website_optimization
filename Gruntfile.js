@@ -46,30 +46,41 @@ module.exports = function(grunt) {
         }]
       }
     },
-    imagemin: {                          // Task
-//      static: {                          // Target
-//        options: {                       // Target options
-//          optimizationLevel: 3,
-//          svgoPlugins: [{ removeViewBox: false }],
-//          use: [mozjpeg()]
-//        },
-//        files: {                         // Dictionary of files
-//          'dist/img.png': 'src/img.png', // 'destination': 'source'
-//          'dist/img.jpg': 'src/img.jpg',
-//          'dist/img.gif': 'src/img.gif'
-//        }
-//      },
-      dynamic: {                         // Another target
+    imagemin: {
+      png: {
+        options: {
+          optimizationLevel: 7 //Compression level
+        },
         files: [{
-          expand: true,                  // Enable dynamic expansion
-          cwd: 'views/images/',                   // Src matches are relative to this path
-          src: ['*.{png,jpg,gif}'],   // Actual patterns to match
-          dest: 'dist/views/images/'                  // Destination path prefix
+          expand: true, //Dynamic expansion
+          cwd: 'views/images/',
+          src: ['*.png'],
+          dest: 'dist/views/images/',
+          ext: '.png'
         },{
-          expand: true,                  // Enable dynamic expansion
-          cwd: 'img/',                   // Src matches are relative to this path
-          src: ['*.{png,jpg,gif}'],   // Actual patterns to match
-          dest: 'dist/img/'                  // Destination path prefix
+          expand: true,
+          cwd: 'img/',
+          src: ['*.png'],
+          dest: 'dist/img/',
+          ext: '.png'
+        }]
+      },
+      jpg: {
+        options: {
+          progressive: true
+        },
+        files: [{
+          expand: true, //Dynamic expansion
+          cwd: 'views/images/',
+          src: ['*.jpg'],
+          dest: 'dist/views/images/',
+          ext: '.jpg'
+        },{
+          expand: true,
+          cwd: 'img/',
+          src: ['*.jpg'],
+          dest: 'dist/img/',
+          ext: '.jpg'
         }]
       }
     },
