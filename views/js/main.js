@@ -506,11 +506,17 @@ function updatePositions() {
 
   var items = document.querySelectorAll('.mover'),
     cachedScrollTop = document.body.scrollTop,
-    phase;
-  for (var i = 0; i < items.length; i++) {
-    phase = Math.sin( (cachedScrollTop / 1250) + (i % 5));
-    items[i].style.WebkitTransform = "translateX(" + (items[i].basicLeft + (100 * phase)) + 'px)';
-    console.log(items[i].basicLeft + 100 * phase + 'px');
+    phase = [];
+  for (var j = 0; j < 5; j++){
+    phase[j] = Math.sin( (cachedScrollTop / 1250) + (j % 5))
+  }
+  for (var i = 0, k = 0; i < items.length; i++) {
+    items[i].style.WebkitTransform = "translateX(" + (items[i].basicLeft + (100 * phase[k])) + 'px)';
+    if (k === 4) {
+      k = 0;
+    }else{
+      k++;
+    }
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
