@@ -30,7 +30,7 @@ module.exports = function(grunt) {
         shorthandCompacting: false,
         roundingPrecision: -1
       },
-      target: {
+      dynamic: {
         files: [{
           expand: true,
           cwd: 'css',
@@ -47,40 +47,17 @@ module.exports = function(grunt) {
       }
     },
     imagemin: {
-      png: {
-        options: {
-          optimizationLevel: 7 //Compression level
-        },
+      dynamic: {
         files: [{
-          expand: true, //Dynamic expansion
-          cwd: 'views/images/',
-          src: ['*.png'],
-          dest: 'dist/views/images/',
-          ext: '.png'
-        },{
           expand: true,
           cwd: 'img/',
-          src: ['*.png'],
-          dest: 'dist/img/',
-          ext: '.png'
-        }]
-      },
-      jpg: {
-        options: {
-          progressive: true
-        },
-        files: [{
-          expand: true, //Dynamic expansion
-          cwd: 'views/images/',
-          src: ['*.jpg'],
-          dest: 'dist/views/images/',
-          ext: '.jpg'
+          src: ['**/*.{png,jpg,gif}'],
+          dest: 'dist/img/'
         },{
           expand: true,
-          cwd: 'img/',
-          src: ['*.jpg'],
-          dest: 'dist/img/',
-          ext: '.jpg'
+          cwd: 'views/images/',
+          src: ['**/*.{png,jpg,gif}'],
+          dest: 'dist/views/images/'
         }]
       }
     },
@@ -98,6 +75,17 @@ module.exports = function(grunt) {
           'dist/views/pizza.html': 'views/pizza.html'
         }
       }
+    },
+    compress: {
+      main: {
+        options: {
+          mode: 'gzip'
+        },
+        expand: true,
+        cwd: 'dist/',
+        src: ['**/*.{css,html,js,png,jpg,gif}'],
+        dest: 'dist1/'
+      }
     }
   });
 
@@ -106,10 +94,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
+  grunt.loadNpmTasks('grunt-contrib-compress');
 
 
   // Default task(s).
-  grunt.registerTask('default', ['concat', 'cssmin', 'imagemin', 'htmlmin']);
+  grunt.registerTask('default', ['concat', 'cssmin', 'imagemin', 'htmlmin', 'compress']);
 
   //grunt.registerTask('build', ['useminPrepare', 'concat:generated', 'cssmin:generated', 'imagemin', 'htmlmin', 'usemin']);
 
